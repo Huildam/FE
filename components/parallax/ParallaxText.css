@@ -1,0 +1,28 @@
+html, body, #root {
+  width: 100vw;
+  margin: 0;
+  padding: 10;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.parallax {
+  width: 100vw;
+  min-width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroller {
+  display: flex;
+  width: 100vw;
+  min-width: 100vw;
+  font-size: 6rem;
+  font-weight: bold;
+  white-space: nowrap;
+  color: white; /* 또는 원하는 색상 */
+}
+
+.scroller span {
+  flex-shrink: 0;
+} 
