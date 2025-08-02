@@ -1,5 +1,4 @@
 import { Post, PostList } from "@/app/types/Post";
-import { getApiEndpoint } from "@/app/utils/getApiEndPoint";
 
 const makeRequestBody = (cateType: string, email: string, form: Post) => {
   const base = {
