@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,18 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  MapPin,
-  Clock,
-  TrendingUp,
-  Plus,
-  Search,
-  Filter,
-  User,
-} from "lucide-react";
-import Image from "next/image";
+import { MapPin, Clock, TrendingUp, Search } from "lucide-react";
 import Link from "next/link";
-import { CardGlass } from "@/components/ui/card-glass";
+import StickyHeader from "@/components/StickyHeader";
 
 interface Incident {
   id: string;
@@ -248,48 +238,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 스크롤 시 나타나는 헤더 */}
-      <header
-        className={`fixed top-0 left-0 w-full z-50 bg-white shadow transition-transform duration-300
-          ${
-            showStickyHeader
-              ? "translate-y-0"
-              : "-translate-y-full pointer-events-none"
-          }
-        `}
-        style={{ height: 64 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/main">
-                <Image
-                  src="/후일담logo.svg"
-                  alt="후일담 로고"
-                  width={40}
-                  height={40}
-                />
-              </Link>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <Link href="/mypage">
-                <Button
-                  variant="ghost"
-                  className="text-gray-600 hover:text-[#0047AB]"
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  마이페이지
-                </Button>
-              </Link>
-              <Link href="/submit">
-                <Button className="bg-[#0047AB] hover:bg-[#002B64] text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  사건 등록
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+
+      <StickyHeader heroSectionId="hero-section" />
 
       {/* Hero Section */}
       <section
