@@ -5,4 +5,11 @@ export interface LoginformData {
   password: string;
 }
 
-export interface LoginResponse {}
+export interface LoginResponse {
+  access_token: "string";
+  token_type: "bearer";
+  user_id: 0;
+  email: "string";
+  role: "string";
+  region_id: 0;
+}
