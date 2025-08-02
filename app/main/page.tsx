@@ -284,8 +284,28 @@ rgb(191, 254, 244) 310deg,
           </p>
         </div>
 
+        {/* 키워드 버튼 */}
+        <div className="mt-4 flex gap-2 items-center justify-center">
+          <Button variant={"keyword"}>식품안전</Button>
+          <Button variant={"keyword"}>전세사기</Button>
+          <Button variant={"keyword"}>인명피해</Button>
+          <Button variant={"keyword"}>물적피해</Button>
+          <Button variant={"keyword"}>강력범죄</Button>
+          <Button variant={"keyword"}>동물</Button>
+          <Button variant={"keyword"}>경제</Button>
+          <Button variant={"keyword"}>소방</Button>
+          {/* <Button variant={"keyword01"}>식품안전</Button>
+          <Button variant={"keyword02"}>전세사기</Button>
+          <Button variant={"keyword03"}>인명피해</Button>
+          <Button variant={"keyword04"}>물적피해</Button>
+          <Button variant={"keyword01"}>강력범죄</Button>
+          <Button variant={"keyword02"}>동물</Button>
+          <Button variant={"keyword03"}>경제</Button>
+          <Button variant={"keyword04"}>소방</Button> */}
+        </div>
+
         {/* 검색 박스 */}
-        <div className="mt-8 flex gap-2 bg-white/20 backdrop-blur-2xl border border-white/30 shadow-lg px-6 py-3 rounded-xl items-center">
+        <div className="mt-4 flex gap-2 bg-white/20 backdrop-blur-2xl border border-white/30 shadow-lg px-6 py-3 rounded-xl items-center">
           <input
             type="text"
             placeholder="사건명이나 키워드로 검색하세요"
@@ -309,7 +329,7 @@ rgb(191, 254, 244) 310deg,
       >
         {/* Stats */}
         <div
-          className="grid grid-cols-3 gap-6 mb-8 overflow-x-auto"
+          className="grid grid-cols-3 gap-6 pb-8 overflow-x-auto"
           style={{ minWidth: 300 }}
         >
           <Card
