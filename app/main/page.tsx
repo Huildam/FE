@@ -1,27 +1,31 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Clock, TrendingUp, Plus, Search, Filter } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { CardGlass } from "@/components/ui/card-glass";
+import { useState, useEffect, useRef } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MapPin, Clock, TrendingUp, Search } from "lucide-react";
+import Link from "next/link";
+import StickyHeader from "@/components/StickyHeader";
 
 interface Incident {
-  id: string
-  title: string
-  region: string
-  category: string
-  status: "ongoing" | "resolved" | "investigating"
-  summary: string
-  startDate: string
-  lastUpdate: string
-  viewCount: number
-  timelineCount: number
+  id: string;
+  title: string;
+  region: string;
+  category: string;
+  status: "ongoing" | "resolved" | "investigating";
+  summary: string;
+  startDate: string;
+  lastUpdate: string;
+  viewCount: number;
+  timelineCount: number;
 }
 
 const mockIncidents: Incident[] = [
@@ -31,7 +35,8 @@ const mockIncidents: Incident[] = [
     region: "부천시",
     category: "식품안전",
     status: "resolved",
-    summary: "부천시 소재 샤브샤브 식당에서 집단 식중독 발생. 보건소 조사 결과 노로바이러스 검출.",
+    summary:
+      "부천시 소재 샤브샤브 식당에서 집단 식중독 발생. 보건소 조사 결과 노로바이러스 검출.",
     startDate: "2024-01-15",
     lastUpdate: "2024-02-10",
     viewCount: 1250,
@@ -43,7 +48,8 @@ const mockIncidents: Incident[] = [
     region: "인천시",
     category: "환경안전",
     status: "resolved",
-    summary: "인천 서구 일대에서 붉은 수돗물이 나오는 현상 발생. 상수도 관로 교체 작업 완료.",
+    summary:
+      "인천 서구 일대에서 붉은 수돗물이 나오는 현상 발생. 상수도 관로 교체 작업 완료.",
     startDate: "2024-02-20",
     lastUpdate: "2024-03-05",
     viewCount: 2100,
@@ -55,13 +61,14 @@ const mockIncidents: Incident[] = [
     region: "포항시",
     category: "산업안전",
     status: "investigating",
-    summary: "포항제철소 내 화재 발생으로 인한 대기오염 우려. 환경부 조사 진행 중.",
+    summary:
+      "포항제철소 내 화재 발생으로 인한 대기오염 우려. 환경부 조사 진행 중.",
     startDate: "2024-03-10",
     lastUpdate: "2024-03-15",
     viewCount: 890,
     timelineCount: 5,
   },
-]
+];
 
 const regions = [
   "전체",
@@ -82,48 +89,61 @@ const regions = [
   "경북",
   "경남",
   "제주",
-]
-const categories = ["전체", "식품안전", "환경안전", "산업안전", "교통안전", "건설안전", "기타"]
+];
+const categories = [
+  "전체",
+  "식품안전",
+  "환경안전",
+  "산업안전",
+  "교통안전",
+  "건설안전",
+  "기타",
+];
 
 export default function HomePage() {
-  const [incidents, setIncidents] = useState<Incident[]>(mockIncidents)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedRegion, setSelectedRegion] = useState("전체")
-  const [selectedCategory, setSelectedCategory] = useState("전체")
-  const [filteredIncidents, setFilteredIncidents] = useState<Incident[]>(mockIncidents)
+  const [incidents, setIncidents] = useState<Incident[]>(mockIncidents);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("전체");
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [filteredIncidents, setFilteredIncidents] =
+    useState<Incident[]>(mockIncidents);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
 
   useEffect(() => {
-    let filtered = incidents
+    let filtered = incidents;
 
     if (searchTerm) {
       filtered = filtered.filter(
         (incident) =>
           incident.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          incident.summary.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+          incident.summary.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     if (selectedRegion !== "전체") {
-      filtered = filtered.filter((incident) => incident.region.includes(selectedRegion))
+      filtered = filtered.filter((incident) =>
+        incident.region.includes(selectedRegion)
+      );
     }
 
     if (selectedCategory !== "전체") {
-      filtered = filtered.filter((incident) => incident.category === selectedCategory)
+      filtered = filtered.filter(
+        (incident) => incident.category === selectedCategory
+      );
     }
 
-    setFilteredIncidents(filtered)
-  }, [searchTerm, selectedRegion, selectedCategory, incidents])
+    setFilteredIncidents(filtered);
+  }, [searchTerm, selectedRegion, selectedCategory, incidents]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const hero = document.getElementById('hero-section');
+      const hero = document.getElementById("hero-section");
       if (!hero) return;
       const heroBottom = hero.getBoundingClientRect().bottom;
       setShowStickyHeader(heroBottom <= 0);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // 트렌드 목업 데이터
@@ -137,7 +157,7 @@ export default function HomePage() {
     "전남 여수 화학공장 유증기 누출 사고",
     "대구 도심 주택가 가스 폭발 사고 발생",
     "제주 서귀포 해상 낚시 어선 침몰 구조작업",
-    "전국 공사장 추락사·산업재해 사망자 증가"
+    "전국 공사장 추락사·산업재해 사망자 증가",
   ];
 
   // 세로 롤링 트렌드 컴포넌트
@@ -174,7 +194,12 @@ export default function HomePage() {
             >
               <span
                 className="font-semibold text-[#002B64] transition-colors duration-200 hover:text-[#002B64] w-full text-center"
-                style={{ lineHeight: "48px", fontSize: "13px", verticalAlign: "middle", paddingBottom: "22px" }}
+                style={{
+                  lineHeight: "48px",
+                  fontSize: "13px",
+                  verticalAlign: "middle",
+                  paddingBottom: "22px",
+                }}
               >
                 {i + 1}위 {trend}
               </span>
@@ -188,41 +213,33 @@ export default function HomePage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "resolved":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">해결완료</Badge>
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+            해결완료
+          </Badge>
+        );
       case "ongoing":
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">진행중</Badge>
+        return (
+          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+            진행중
+          </Badge>
+        );
       case "investigating":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">조사중</Badge>
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+            조사중
+          </Badge>
+        );
       default:
-        return <Badge variant="secondary">알 수 없음</Badge>
+        return <Badge variant="secondary">알 수 없음</Badge>;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 스크롤 시 나타나는 헤더 */}
-      <header
-        className={`fixed top-0 left-0 w-full z-50 bg-white shadow transition-transform duration-300
-          ${showStickyHeader ? "translate-y-0" : "-translate-y-full pointer-events-none"}
-        `}
-        style={{height: 64}}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/main">
-                <Image src="/후일담logo.svg" alt="후일담 로고" width={40} height={40} />
-              </Link>
-            </div>
-            <Link href="/submit">
-              <Button className="bg-[#0047AB] hover:bg-[#002B64] text-white">
-                <Plus className="w-4 h-4 mr-2" />
-                사건 등록
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+
+      <StickyHeader heroSectionId="hero-section" />
 
       {/* Hero Section */}
       <section
@@ -245,7 +262,7 @@ export default function HomePage() {
 rgb(191, 254, 244) 310deg,
               #B3C7F7 360deg
             )
-          `
+          `,
         }}
       >
         {/* Hero 텍스트 */}
@@ -259,8 +276,8 @@ rgb(191, 254, 244) 310deg,
           <p
             className="mt-2 text-lg"
             style={{
-              color: '#F0F4FF',
-              textShadow: '1px 1px 2px rgba(0,0,0,0.3)'
+              color: "#F0F4FF",
+              textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
             }}
           >
             정확하고 구조화된 정보를 제공합니다.
@@ -273,7 +290,7 @@ rgb(191, 254, 244) 310deg,
             type="text"
             placeholder="사건명이나 키워드로 검색하세요"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-transparent border-none outline-none text-white placeholder-white/70 text-base w-64"
           />
           <button className="search-btn">
@@ -285,41 +302,67 @@ rgb(191, 254, 244) 310deg,
         <VerticalTrendCarousel trends={mockTrends} />
       </section>
 
-
       {/* Main Content */}
       <main
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
         style={showStickyHeader ? { paddingTop: 115 } : {}}
       >
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-6 mb-8 overflow-x-auto" style={{ minWidth: 300 }}>
-          <Card style={{
-            background: "rgba(255,255,255,0.15)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-            color: "#0047AB"
-          }}>
+        <div
+          className="grid grid-cols-3 gap-6 mb-8 overflow-x-auto"
+          style={{ minWidth: 300 }}
+        >
+          <Card
+            style={{
+              background: "rgba(255,255,255,0.15)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+              color: "#0047AB",
+            }}
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base font-bold" style={{ color: '#0047AB' }}>총 사건</p>
-                  <p className="text-3xl font-bold" style={{ color: '#0047AB' }}>{incidents.length}</p>
+                  <p
+                    className="text-base font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    총 사건
+                  </p>
+                  <p
+                    className="text-3xl font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    {incidents.length}
+                  </p>
                 </div>
                 <TrendingUp className="w-8 h-8 text-[#0047AB] hidden md:inline" />
               </div>
             </CardContent>
           </Card>
-          <Card style={{
-            background: "rgba(255,255,255,0.15)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-            color: "#0047AB"
-          }}>
+          <Card
+            style={{
+              background: "rgba(255,255,255,0.15)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+              color: "#0047AB",
+            }}
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base font-bold" style={{ color: '#0047AB' }}>해결된</p>
-                  <p className="text-3xl font-bold" style={{ color: '#0047AB' }}>{incidents.filter((i) => i.status === "resolved").length}</p>
+                  <p
+                    className="text-base font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    해결된
+                  </p>
+                  <p
+                    className="text-3xl font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    {incidents.filter((i) => i.status === "resolved").length}
+                  </p>
                 </div>
                 <div className="w-8 h-8 bg-[#AFDCFF] rounded-full hidden md:flex items-center justify-center">
                   <div className="w-4 h-4 bg-[#0047AB] rounded-full"></div>
@@ -327,17 +370,34 @@ rgb(191, 254, 244) 310deg,
               </div>
             </CardContent>
           </Card>
-          <Card style={{
-            background: "rgba(255,255,255,0.15)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-            color: "#0047AB"
-          }}>
+          <Card
+            style={{
+              background: "rgba(255,255,255,0.15)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+              color: "#0047AB",
+            }}
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base font-bold" style={{ color: '#0047AB' }}>진행중</p>
-                  <p className="text-3xl font-bold" style={{ color: '#0047AB' }}>{incidents.filter((i) => i.status === "investigating" || i.status === "ongoing").length}</p>
+                  <p
+                    className="text-base font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    진행중
+                  </p>
+                  <p
+                    className="text-3xl font-bold"
+                    style={{ color: "#0047AB" }}
+                  >
+                    {
+                      incidents.filter(
+                        (i) =>
+                          i.status === "investigating" || i.status === "ongoing"
+                      ).length
+                    }
+                  </p>
                 </div>
                 <Clock className="w-8 h-8 text-[#0047AB] hidden md:inline" />
               </div>
@@ -345,43 +405,48 @@ rgb(191, 254, 244) 310deg,
           </Card>
         </div>
 
-    {/* Filters */}
-      <div className="flex flex-row gap-2 items-center justify-center w-full my-4">
-        <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-          <SelectTrigger className="min-w-[120px] w-full sm:w-48">
-            <SelectValue placeholder="지역 선택" />
-          </SelectTrigger>
-          <SelectContent>
-            {regions.map((region) => (
-              <SelectItem key={region} value={region}>
-                {region}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-          <SelectTrigger className="min-w-[120px] w-full sm:w-48">
-            <SelectValue placeholder="카테고리 선택" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        {/* Filters */}
+        <div className="flex flex-row gap-2 items-center justify-center w-full my-4">
+          <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+            <SelectTrigger className="min-w-[120px] w-full sm:w-48">
+              <SelectValue placeholder="지역 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              {regions.map((region) => (
+                <SelectItem key={region} value={region}>
+                  {region}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="min-w-[120px] w-full sm:w-48">
+              <SelectValue placeholder="카테고리 선택" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Incidents List */}
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-2xl font-bold text-gray-900">최근 사건 ({filteredIncidents.length}건)</h3>
+            <h3 className="text-2xl font-bold text-gray-900">
+              최근 사건 ({filteredIncidents.length}건)
+            </h3>
           </div>
 
           <div className="grid gap-6">
             {filteredIncidents.map((incident) => (
-              <Card key={incident.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Card
+                key={incident.id}
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+              >
                 <Link href={`/incident/${incident.id}`}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -401,7 +466,9 @@ rgb(191, 254, 244) 310deg,
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-700 mb-4 line-clamp-2">{incident.summary}</p>
+                    <p className="text-gray-700 mb-4 line-clamp-2">
+                      {incident.summary}
+                    </p>
                     <div className="flex justify-between items-center text-sm text-gray-500">
                       <div className="flex items-center gap-4">
                         <span>시작일: {incident.startDate}</span>
@@ -420,9 +487,13 @@ rgb(191, 254, 244) 310deg,
 
           {filteredIncidents.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">검색 조건에 맞는 사건이 없습니다.</p>
+              <p className="text-gray-500 text-lg">
+                검색 조건에 맞는 사건이 없습니다.
+              </p>
               <Link href="/submit">
-                <Button className="mt-4 bg-[#0047AB] hover:bg-[#002B64] text-white">새 사건 등록하기</Button>
+                <Button className="mt-4 bg-[#0047AB] hover:bg-[#002B64] text-white">
+                  새 사건 등록하기
+                </Button>
               </Link>
             </div>
           )}
@@ -471,5 +542,5 @@ rgb(191, 254, 244) 310deg,
         </div>
       </footer>
     </div>
-  )
-} 
+  );
+}
