@@ -29,6 +29,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
+import { useLogoutMutation } from "@/hooks/useAuthQuery";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface UserProfile {
   id: string;
@@ -152,7 +155,7 @@ const mockMyIncidents: MyIncident[] = [
   },
 ];
 
-export function UserMyPage() {
+export function UserMypage() {
   const [user, setUser] = useState<UserProfile>(mockUser);
   const [myIncidents, setMyIncidents] = useState<MyIncident[]>(mockMyIncidents);
   const [isEditing, setIsEditing] = useState(false);
@@ -161,6 +164,8 @@ export function UserMyPage() {
     bio: user.bio || "",
     region: user.region,
   });
+  const logoutMutation = useLogoutMutation();
+  const router = useRouter();
 
   const handleSaveProfile = () => {
     setUser((prev) => ({
@@ -266,6 +271,16 @@ export function UserMyPage() {
     });
   };
 
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      toast.success("로그아웃 되었습니다.");
+      router.push("/");
+    } catch (error: any) {
+      toast.error(error.message || "로그아웃 실패");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -284,12 +299,10 @@ export function UserMyPage() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link href="/mypage?type=journalist">
-                <Button variant="outline" size="sm">
-                  기자 페이지로
-                </Button>
-              </Link>
-              <Link href="/">
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                로그아웃
+              </Button>
+              <Link href="/main">
                 <Button variant="outline">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   홈으로
